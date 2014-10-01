@@ -12,7 +12,7 @@ function csvHandler(request, response) {
 
 	csvConverter.on("end_parsed",function(jsonObj){
 		csvObj = JSON.stringify(jsonObj);
-		response.write(csvObj);
+		response.write(csvObj); //write
   		response.end();
 	});
 	fileStream.pipe(csvConverter);
