@@ -15,8 +15,6 @@ function csvHandler(request, response) {
 		response.write(csvObj);
   		response.end();
 	});
-
-	//read from file
 	fileStream.pipe(csvConverter);
 }
 
