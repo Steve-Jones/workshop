@@ -1,6 +1,25 @@
 var http = require('http');
 var url  = require('url');
 
+var Converter=require("csvtojson").core.Converter;
+var fs=require("fs");
+
+function csvHandler(request, response) {
+	var csvFileName="user.csv";
+	var fileStream=fs.createReadStream(csvFileName);
+	var param={};
+	var csvConverter=new Converter(param);
+
+	csvConverter.on("end_parsed",function(jsonObj){
+		csvObj = JSON.stringify(jsonObj);
+		response.write(csvObj);
+  		response.end();
+	});
+
+	//read from file
+	fileStream.pipe(csvConverter);
+}
+
 function textHandler(request, response) {
   console.log('received a request from ' + request.headers.host);
   console.log('resource requested: ' + request.url);
@@ -25,14 +44,16 @@ function jsonHandler(request, response) {
   response.end();
 }
 
+
+
 if (process.argv.length < 3) {
-  console.log('usage: node http-server.js [text|json]');
+  console.log('usage: node http-server.js [text|json|csv]');
   process.exit(1);
 }
 
 var handlerType = process.argv[2];
-if (!(handlerType === 'text' || handlerType === 'json')) {
-  console.log('usage: node http-server.js [text|json]');
+if (!(handlerType === 'text' || handlerType === 'json' || handlerType === 'csv')) {
+  console.log('usage: node http-server.js [text|json|csv]');
   process.exit(1);  
 }
 
@@ -44,6 +65,9 @@ switch (handlerType) {
     break;
   case 'json':
     server = http.createServer(jsonHandler);
+    break;
+  case 'csv':
+    server = http.createServer(csvHandler);
     break;
   default:
     throw new Error('invalid handler type!');
