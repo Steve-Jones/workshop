@@ -8,7 +8,7 @@ var pg = require('pg');
 
 var connString = 'postgres://student:student@localhost/student';
 
-function getUsers(callback) {
+function getUsers(callback, resp) {
   pg.connect(connString, function (err, client, done) {
     if (err) {
       callback(err);
@@ -23,7 +23,29 @@ function getUsers(callback) {
           callback(err);
         }
         else {
-          callback(undefined, result.rows);
+          callback(undefined, result.rows, resp);
+        }
+      });
+    }
+  });
+}
+function getUser(fname, lname, callback, resp) {
+  pg.connect(connString, function (err, client, done) {
+    if (err) {
+      callback(err);
+    }
+    else {
+    	var querystring = 'SELECT U.fname, U.lname, A.* FROM users U, address A, lives L WHERE U.fname=$1 AND U.lname=$2 AND U.uid = L.uid AND A.aid = L.aid';
+    	client.query(querystring, [fname, lname], function(err, result){
+        // Ends the "transaction":
+        done();
+        // Disconnects from the database:
+        client.end();
+        if (err) {
+          callback(err);
+        }
+        else {
+          callback(undefined, result.rows, resp);
         }
       });
     }
@@ -78,14 +100,20 @@ function updatePassword(fname, lname, passwd, callback) {
   });
 }
 
-function printUsers(err, users) {
+function printUsers(err, users, resp) {
   if (err) {
     throw err;
   }
   else {
+  	var aUsers = [];
+  	var i =0;
     users.forEach(function (user) {
-      console.log(user);
+    	aUsers[i] = user;
+    	i++;
     });
+    var jUser = JSON.stringify(aUsers);
+    resp.write(jUser);
+    resp.end();
   }
 }
 
@@ -101,6 +129,7 @@ function printUserNames(err, users) {
 }
 
 exports.getUsers = getUsers;
+exports.getUser = getUser;
 exports.createUser = createUser;
 exports.updatePassword = updatePassword;
 exports.printUsers = printUsers;
