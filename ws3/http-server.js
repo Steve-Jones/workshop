@@ -4,7 +4,6 @@ var db  = require('db');
 //
 function dbHandler(request, response) {
   response.writeHead(200, { 'Content-Type' : 'text/sql' });
-  console.log('LOG ====== ' + request.headers.fname + '\n');
   db.getUser(request.headers.fname, request.headers.lname, db.printUsers, response);
 }
 
