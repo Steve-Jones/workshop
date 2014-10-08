@@ -1,8 +1,8 @@
 var url = require('url');
 var http = require('http');
 
-if (process.argv.length < 3) {
-  console.log('usage: node http-client.js [h|rh|json|sql] [url]');
+if (process.argv.length < 5) {
+  console.log('usage: node http-client.js [h|rh|json|sql] [url] [fname] [lname]');
   process.exit(1);
 }
 
@@ -19,11 +19,18 @@ if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json' || h
 
 var url = url.parse(urlStr);
 
+var fname = process.argv[4];
+var lname = process.argv[5];
+
 var options = {
     host: url.hostname,
     path: url.path,
     port: url.port || 80,
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      fname: fname,
+      lname: lname
+    }
   };
 
 /**
