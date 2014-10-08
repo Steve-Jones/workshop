@@ -106,7 +106,7 @@ function printUsers(err, users, resp) {
   }
   else {
   	var aUsers = [];
-  	var i =0;
+  	var i = 0;
     users.forEach(function (user) {
     	aUsers[i] = user;
     	i++;

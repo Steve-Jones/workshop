@@ -1,8 +1,11 @@
 var url = require('url');
 var http = require('http');
 
-if (process.argv.length < 5) {
-  console.log('usage: node http-client.js [h|rh|json|sql] [url] [fname] [lname]');
+console.log('usage: node http-client.js [h|rh|json|sql] [url] *[fname] *[lname] \n * = optional');
+
+
+if (process.argv.length < 3) {
+  console.log('usage: node http-client.js [h|rh|json|sql] [url] *[fname] *[lname] \n * = optional');
   process.exit(1);
 }
 

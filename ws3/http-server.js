@@ -4,7 +4,10 @@ var db  = require('db');
 //
 function dbHandler(request, response) {
   response.writeHead(200, { 'Content-Type' : 'text/sql' });
-  db.getUser(request.headers.fname, request.headers.lname, db.printUsers, response);
+  if(request.headers.fname !== "undefined")
+    db.getUser(request.headers.fname, request.headers.lname, db.printUsers, response);
+  else
+    db.getUsers(db.printUsers, response);
 }
 
 function textHandler(request, response) {
