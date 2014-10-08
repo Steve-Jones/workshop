@@ -1,7 +1,7 @@
 var http = require('http');
 var url  = require('url');
 var db  = require('db');
-
+//
 function dbHandler(request, response) {
   response.writeHead(200, { 'Content-Type' : 'text/sql' });
   db.getUser("John", "Doe", db.printUsers, response);

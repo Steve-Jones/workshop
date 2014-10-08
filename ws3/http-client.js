@@ -6,7 +6,7 @@ if (process.argv.length < 3) {
   process.exit(1);
 }
 
-// The handler function to invoke:
+// The handler function to invoke
 var handlerType = process.argv[2];
 
 // The url to connect to:
