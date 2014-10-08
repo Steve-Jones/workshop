@@ -27,7 +27,7 @@ var options = {
   };
 
 /**
- * A function to create a response handler
+ * A function to create a response handler 
  */
 function createResponseHandler (callback) {
   /**
